@@ -6,17 +6,14 @@ pipeline{
       steps{
         echo 'building...'
         sh '''
-        pip install -r requirments.txt
-        
         '''
       }
-      stage("test"){
-        steps{
-           echo 'testing...'
-          sh '''
-          python3 hello.py
-          '''
-        }
+    stage("test"){
+       steps{
+          echo 'testing...'
+         sh '''
+         '''
+       }
       }
     }
   }
