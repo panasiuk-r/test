@@ -1,6 +1,5 @@
 pipeline{
   agent any 
-  
   stages{
     stage("build"){
       steps{
@@ -8,13 +7,13 @@ pipeline{
         sh '''
         '''
       }
+    }
     stage("test"){
        steps{
           echo 'testing...'
          sh '''
          '''
        }
-      }
-    }
+    }  
   }
 }
