@@ -5,7 +5,7 @@ pipeline{
       steps{
         echo 'building...'
         sh '''
-         python3 --version
+         py3 --version
          python3 -m pip install mpi4py
         '''
       }
