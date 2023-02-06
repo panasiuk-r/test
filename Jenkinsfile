@@ -1,13 +1,12 @@
 pipeline{
     agent {
-        docker { image 'node:16-alpine' }
+        docker { image 'python' }
     }  
     stages{
         stage("build"){
           steps{
             echo 'building...'
             sh '''
-            node --version
             // py3 --version
             // python3 -m pip install mpi4py
             '''
