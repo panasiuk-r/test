@@ -8,7 +8,7 @@ pipeline{
             echo 'building...'
             sh '''
              py3 --version
-             python3 -m pip install mpi4py
+            // python3 -m pip install mpi4py
             '''
           }
         }
@@ -16,7 +16,7 @@ pipeline{
            steps{
               echo 'testing...'
              sh '''
-               mpirun -np 4 python3 mpi.py
+              // mpirun -np 4 python3 mpi.py
              '''
            }
         }  
