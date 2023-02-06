@@ -5,6 +5,7 @@ pipeline{
       steps{
         echo 'building...'
         sh '''
+         python -m pip install mpi4py
         '''
       }
     }
@@ -12,7 +13,7 @@ pipeline{
        steps{
           echo 'testing...'
          sh '''
-          mpiexec -n 4 python3 mpi.py
+           mpirun -np 4 python mpi.py
          '''
        }
     }  
