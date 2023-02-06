@@ -1,88 +1,51 @@
-from threading import *
-import threading
-from time import time, sleep
 import random
+from mpi4py import MPI
+from time import time
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+print('My rank is', rank)
 
-locker = threading.Lock()
+N = 100000000
+pi = 0
+circle = 0
+square = 0
 
 
-class MyClass1:
-    def __init__(self, f1=0, f2=0):
-        self.__f1 = f1
-        self.__f2 =f2
-
-    def getF1(self):
-        return self.__f1
-    def getF2(self):
-        return self.__f2
-
-    def setF1(self, f1):
-        self.__f1=f1
-    def setF2(self, f2):
-        self.__f2=f2
-
-class MyClass2:
-    def __init__(self, f1=0, f2=0):
-        self.__f1 = f1
-        self.__f2 =f2
-
-    def getF1(self):
-        return self.__f1
-    def getF2(self):
-        return self.__f2
-
-    def setF1(self, f1):
-        self.__f1=f1
-    def setF2(self, f2):
-        self.__f2=f2
-
-def fu1(MC, K1, lock, event):
-    try:
-        lock.acquire()
-        print("thread has started")
-        N1=0
-        N2=0
-        for i in range(K1):
-            N1=random.random()
-            N2=random.random()
-            nF1=N1+MC.getF1()
-            nF2=N2+MC.getF2()
-            MC.setF1(nF1)
-            MC.setF2(nF2)
-        print("thread has finished")
-        lock.release()
-        event.set()
-    except:
-        print("An exception in locker occurred")
-
+def monte_carlo():
+    n = comm.recv(source=0) 
+    circle = 0
+    square = 0
+    pi = 0
+    for i in range(n):
+        x = random.uniform(-1, 1)
+        y = random.uniform(-1, 1)
+        d = x*x+y*y
+        if d <= 1:
+            circle += 1
+        square += 1
+    comm.send(circle, dest=0)
+    comm.send(square, dest=0)
 
 def main():
-    x1 = time()
-    K1=random.randint(10000,20000)
-    K2=random.randint(10000,20000)
-    N=random.randint(10,20)
-    print("N=",N)
-    events=[]
-    thrs=[]
-    e=0;
-    MC1=MyClass1()
-    MC2=MyClass2()
-    for i in range(N):
-        e=threading.Event()
-        events.append(e)
-        if i < N/2:
-            thr=Thread(target = fu1, args = (MC1,K1,locker,e,))
-        elif i>= N/2:
-            thr=Thread(target = fu1, args = (MC2,K2,locker,e,))
-        thrs.append(thr)
-        thr.start()
-    print("almost there")
-    for i in range(N):
-        if events[i].is_set()!=True:
-            events[i].wait()
-    print("Done")
-    x2=time()
-    print(x2-x1)
+    if rank != 0:
+        monte_carlo()
 
-if __name__=="__main__":
+    if rank == 0:
+        x1 = time()
+        size = comm.size
+        global N
+        global circle
+        global square
+        n = N//(size-1)
+        for i in range(1, size):
+            comm.send(n, dest=i)
+        for i in range(1, size):
+            circle += comm.recv(source=i)
+            square += comm.recv(source=i)
+        pi = 4 * circle / square
+        x2 = time()
+        print(pi)
+        print(f"time: {x2-x1}")
+
+if __name__ == '__main__':
     main()
