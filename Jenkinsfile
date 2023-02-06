@@ -1,7 +1,5 @@
 pipeline{
-    agent {
-        docker { image 'python' }
-    }  
+    agent {label 'ubuntu'}  
     stages{
         stage("build"){
           steps{
