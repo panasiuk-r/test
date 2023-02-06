@@ -12,6 +12,7 @@ pipeline{
        steps{
           echo 'testing...'
          sh '''
+          mpiexec -n 4 python3 mpi.py
          '''
        }
     }  
