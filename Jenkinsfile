@@ -5,7 +5,7 @@ pipeline{
           steps{
             echo 'building...'
             sh '''
-            py3 --version
+            python3 --version
             '''
           }
         }
