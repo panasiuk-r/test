@@ -13,7 +13,7 @@ pipeline{
            steps{
               echo 'testing...'
              sh '''
-              mpirun -np 1 python3 mpi.py
+              mpirun -np 2 python3 mpi.py
              '''
            }
         }  
