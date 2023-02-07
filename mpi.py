@@ -37,7 +37,6 @@ def main():
         global circle
         global square
         n = N//(size-1)
-        n = 1
         for i in range(1, size):
             comm.send(n, dest=i)
         for i in range(1, size):
