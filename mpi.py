@@ -36,7 +36,7 @@ def main():
         global N
         global circle
         global square
-        if size != 0:
+        if size != 1:
             n = N//(size-1)
         else:
             n = 1
