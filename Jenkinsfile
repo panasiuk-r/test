@@ -5,9 +5,9 @@ pipeline{
           steps{
             echo 'building...'
             sh '''
-            sudo apt-get install python3.6
+            apt install python3.6
             py3 --version
-            sudo apt-get install python3-pip
+            apt install python3-pip
             // python3 -m pip install mpi4py
             '''
           }
