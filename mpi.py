@@ -38,7 +38,7 @@ def main():
         global square
         if size != 0:
             n = N//(size-1)
-        els:
+        else:
             n = 1
         for i in range(1, size):
             comm.send(n, dest=i)
